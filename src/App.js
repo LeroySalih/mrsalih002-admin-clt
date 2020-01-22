@@ -1,25 +1,47 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import AppBar from './ui/app.bar'
+import AppDrawer from './ui/app.drawer'
+import {BrowserRouter as Router,
+        Switch, Route
+
+} from 'react-router-dom';
+
+import HomePage from './pages/home.page';
+import FeedbackPage from './pages/feedback.page';
+import UserPage from './pages/user.page';
+import PastPapersPage from './pages/past.paper';
+import PageNotFound from './pages/not.found.page';
 
 function App() {
+  
+  const [drawer, setDrawer] = useState(false);
+  
+  const handleMessage =  (message) => console.log(message) 
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <section>
+      <Router>
+        <AppBar onClick={setDrawer}/>
+        <AppDrawer open={drawer} onClose={setDrawer} onMessage={handleMessage}/>
+        <Switch>
+          <Route path="/user">
+            <UserPage/>
+          </Route>
+          <Route path="/feedback">
+            <FeedbackPage/>
+          </Route>
+          <Route path="/pastpapers">
+            <PastPapersPage/>
+          </Route>
+          <Route path="/" exact>
+            <HomePage/>
+          </Route>
+          <Route path="*" >
+            <PageNotFound/>
+          </Route>
+        </Switch>
+      </Router>
+    </section>
   );
 }
 
